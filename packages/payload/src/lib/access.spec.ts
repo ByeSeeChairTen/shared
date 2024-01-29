@@ -25,6 +25,6 @@ describe("access", () => {
         role: "user",
       },
     };
-    expect(isAdminOrRole("superuser")({ req })).toBe(false);
+    expect(isAdminOrRole("notuser")({ req })).toBe(false);
   });
 });
