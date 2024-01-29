@@ -1,0 +1,35 @@
+{
+  "name": "passport-magic-login",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/passport-magic-login/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/passport-magic-login",
+        "tsConfig": "packages/passport-magic-login/tsconfig.lib.json",
+        "packageJson": "packages/passport-magic-login/package.json",
+        "main": "packages/passport-magic-login/src/index.ts",
+        "assets": ["packages/passport-magic-login/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs passport-magic-login {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/passport-magic-login/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

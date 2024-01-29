@@ -1,0 +1,35 @@
+{
+  "name": "payload",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/payload/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/payload",
+        "tsConfig": "packages/payload/tsconfig.lib.json",
+        "packageJson": "packages/payload/package.json",
+        "main": "packages/payload/src/index.ts",
+        "assets": ["packages/payload/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs payload {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/payload/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

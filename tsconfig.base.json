@@ -15,7 +15,13 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "passport-magic-login": ["passport-magic-login/src/index.ts"]
+      "@bsct/passport-magic-login": [
+        "packages/passport-magic-login/src/index.ts"
+      ],
+      "@bsct/payload": ["packages/payload/src/index.ts"],
+      "@bsct/testpkg": ["testpkg/src/index.ts"],
+      "passport-magic-login": ["passport-magic-login/src/index.ts"],
+      "payload": ["payload/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
