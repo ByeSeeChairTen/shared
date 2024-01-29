@@ -1,0 +1,45 @@
+name: Publish Package
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Test
+      run: npm test
+
+    - name: List changed packages
+      id: changed
+      run: echo "::set-output name=packages::$(npx nx print-affected --base=main | jq -r '.projects | join(",")')"
+
+    - name: Publish changed packages
+      run: |
+        IFS=',' read -ra PACKAGES <<< "${{ steps.changed.outputs.packages }}"
+        for PACKAGE in "${PACKAGES[@]}"; do
+          cd packages/$PACKAGE
+          npm publish
+          cd -
+        done
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
