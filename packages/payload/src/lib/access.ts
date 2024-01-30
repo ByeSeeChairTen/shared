@@ -10,3 +10,5 @@ export const isAdminOrRole = (role: string): Access => {
       return req.user?.role === 'admin' || req.user?.role === role
     }
   }
+
+export const isPublic: Access = () => true;
