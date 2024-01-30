@@ -31,8 +31,11 @@ jobs:
 
     - name: List changed packages
       id: changed
-      run: echo "::set-output name=packages::$(npx nx print-affected --base=main | jq -r '.projects | join(",")')"
-
+      run: echo "PACKAGES=$(npx nx print-affected --base=main | jq -r '.projects | join(",")')" >> $GITHUB_ENV
+    
+    - name: Print changed packages
+      run: echo $PACKAGES
+    
     - name: Publish changed packages
       run: |
         IFS=',' read -ra PACKAGES <<< "${{ steps.changed.outputs.packages }}"
