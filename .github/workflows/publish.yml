@@ -24,10 +24,10 @@ jobs:
       run: npm ci
 
     - name: Build
-      run: npm run build
+      run: npx nx affected:build
 
     - name: Test
-      run: npm test
+      run: npx nx affected:test
 
     - name: List changed packages
       id: changed
@@ -38,7 +38,9 @@ jobs:
         IFS=',' read -ra PACKAGES <<< "${{ steps.changed.outputs.packages }}"
         for PACKAGE in "${PACKAGES[@]}"; do
           cd packages/$PACKAGE
-          npm publish
+          npm version patch -m "chore(release): publish %s"
+          VERSION=$(node -p "require('./package.json').version")
+          npx nx publish $PACKAGE --tag=latest --version=$VERSION 
           cd -
         done
       env:
